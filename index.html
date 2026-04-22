@@ -7,36 +7,30 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <main class="layout">
-    <section class="hero">
-      <p class="eyebrow">Browser photobooth</p>
-      <h1>Turn `camera.pde` into a live website.</h1>
-      <p class="intro">
-        This page ports the Processing sketch into the browser using `getUserMedia()`,
-        canvas pixel processing, and the same 8x8 Bayer matrix.
-      </p>
+  <main class="poster">
+    <section class="panel panel-sidebar">
+      <p class="kicker">Dither booth</p>
       <div class="controls">
         <button id="startButton" type="button">Start camera</button>
         <button id="captureButton" type="button" disabled>Capture frame</button>
         <button id="downloadButton" type="button" disabled>Download image</button>
       </div>
-      <label class="toggle" for="paletteSelect">
-        <span>Palette</span>
-        <select id="paletteSelect">
-          <option value="mono">Black / white</option>
-          <option value="blueGold">Blue / gold</option>
-          <option value="cyanPink">Cyan / pink</option>
-          <option value="rose">Rose</option>
-        </select>
-      </label>
       <p id="status" class="status">Camera idle.</p>
+      <div class="sidebar-copy">
+        <p>camera.pde</p>
+        <p>webcam input</p>
+        <p>bayer dither</p>
+        <p>single capture</p>
+      </div>
     </section>
 
-    <section class="stage">
+    <section class="panel panel-stage">
       <video id="sourceVideo" autoplay playsinline muted hidden></video>
       <canvas id="previewCanvas" width="640" height="480" aria-label="Live dithered camera preview"></canvas>
       <img id="snapshotImage" alt="Captured dithered photo">
     </section>
+
+    <h1 class="poster-word">TAKE A SHOT</h1>
   </main>
 
   <script src="script.js"></script>

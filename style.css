@@ -1,13 +1,11 @@
 :root {
-  --bg: #f6efe5;
-  --bg-accent: #e6d6c4;
-  --panel: rgba(255, 250, 245, 0.86);
-  --ink: #1f1b18;
-  --muted: #60554d;
-  --line: rgba(31, 27, 24, 0.12);
-  --button: #1f1b18;
-  --button-text: #fffaf5;
-  --shadow: 0 24px 80px rgba(52, 37, 20, 0.16);
+  --paper: #f4f1eb;
+  --panel: #ffffff;
+  --ink: #050505;
+  --muted: #2b2b2b;
+  --line: rgba(0, 0, 0, 0.18);
+  --shade: rgba(0, 0, 0, 0.06);
+  --shadow: 0 24px 60px rgba(0, 0, 0, 0.18);
 }
 
 * {
@@ -17,80 +15,95 @@
 body {
   margin: 0;
   min-height: 100vh;
-  font-family: "Segoe UI", "Trebuchet MS", sans-serif;
-  color: var(--ink);
-  background:
-    radial-gradient(circle at top left, rgba(248, 199, 117, 0.42), transparent 30%),
-    radial-gradient(circle at bottom right, rgba(95, 188, 214, 0.35), transparent 28%),
-    linear-gradient(135deg, var(--bg), var(--bg-accent));
-}
-
-.layout {
   display: grid;
-  grid-template-columns: minmax(280px, 380px) minmax(320px, 720px);
-  gap: 2rem;
-  align-items: start;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
+  place-items: center;
+  padding: 0.75rem;
+  font-family: "Arial Narrow", Arial, sans-serif;
+  color: var(--ink);
+  background: #000;
 }
 
-.hero,
-.stage {
+.poster {
+  position: relative;
+  display: grid;
+  grid-template-columns: 210px 1fr;
+  width: min(96vw, 1600px);
+  height: min(96vh, 900px);
   background: var(--panel);
-  backdrop-filter: blur(18px);
-  border: 1px solid var(--line);
-  border-radius: 28px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
   box-shadow: var(--shadow);
+  overflow: hidden;
 }
 
-.hero {
-  padding: 2rem;
+.panel {
+  position: relative;
+  overflow: hidden;
+  border-right: 1px solid var(--line);
 }
 
-.eyebrow {
-  margin: 0 0 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.18em;
-  font-size: 0.75rem;
-  color: var(--muted);
+.panel:last-of-type {
+  border-right: 0;
 }
 
-h1 {
-  margin: 0;
-  font-size: clamp(2.4rem, 6vw, 4.5rem);
-  line-height: 0.96;
-}
-
-.intro {
-  color: var(--muted);
-  line-height: 1.6;
-}
-
-.controls {
+.panel-sidebar {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 0.75rem;
-  margin: 1.5rem 0 1rem;
+  padding: 1rem 1rem 9.5rem;
+  background:
+    linear-gradient(180deg, #d8d8d8, #d1d1d1);
 }
 
-button,
-select {
-  font: inherit;
+.panel-stage {
+  display: grid;
+  place-items: stretch;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(0, 0, 0, 0.08)),
+    #7c7c7c;
+}
+
+.kicker {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 0.64rem;
 }
 
 button {
-  border: 0;
-  border-radius: 999px;
-  background: var(--button);
-  color: var(--button-text);
-  padding: 0.85rem 1.2rem;
+  font: inherit;
+}
+
+.status {
+  font-family: Arial, sans-serif;
+  font-size: 0.75rem;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.controls {
+  display: grid;
+  gap: 0.8rem;
+  margin-top: 0.2rem;
+}
+
+button {
+  border: 3px solid var(--ink);
+  border-radius: 0;
+  background: rgba(255, 255, 255, 0.18);
+  color: #fafafa;
+  padding: 0.72rem 0.85rem;
+  text-align: left;
+  text-transform: lowercase;
+  font-family: Arial, sans-serif;
+  font-size: 0.62rem;
+  letter-spacing: 0;
   cursor: pointer;
-  transition: transform 160ms ease, opacity 160ms ease;
+  transition: background 140ms ease, color 140ms ease, opacity 140ms ease;
 }
 
 button:hover:not(:disabled) {
-  transform: translateY(-1px);
+  background: var(--ink);
+  color: var(--panel);
 }
 
 button:disabled {
@@ -98,61 +111,116 @@ button:disabled {
   cursor: not-allowed;
 }
 
-.toggle {
-  display: grid;
-  gap: 0.5rem;
-  margin-top: 1rem;
-}
-
-select {
-  width: 100%;
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  padding: 0.85rem 1rem;
-  background: rgba(255, 255, 255, 0.7);
-}
-
 .status {
-  min-height: 1.5rem;
-  margin: 1rem 0 0;
-  color: var(--muted);
+  min-height: 1.6rem;
+  margin: 0.2rem 0 0;
+  color: rgba(0, 0, 0, 0.68);
 }
 
-.stage {
-  padding: 1.25rem;
+.sidebar-copy {
+  margin-top: auto;
+  font-size: 0.88rem;
+  line-height: 0.92;
+  letter-spacing: -0.04em;
+  text-transform: lowercase;
+}
+
+.sidebar-copy p {
+  margin: 0 0 0.08rem;
 }
 
 #previewCanvas,
 #snapshotImage {
   display: block;
-  width: 100%;
-  max-width: 100%;
-  border-radius: 22px;
   background: #111;
-  aspect-ratio: 4 / 3;
   object-fit: cover;
+  filter: grayscale(1) contrast(1.18);
+}
+
+#previewCanvas {
+  width: 100%;
+  height: 100%;
 }
 
 #snapshotImage {
-  margin-top: 1rem;
-  border: 1px solid var(--line);
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  width: min(22vw, 260px);
+  aspect-ratio: 4 / 3;
+  height: auto;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.28);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(0, 0, 0, 0.1)),
+    #707070;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 160ms ease, transform 160ms ease;
+  pointer-events: none;
+}
+
+#snapshotImage[src] {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 #snapshotImage:not([src]) {
-  display: none;
+  opacity: 0;
+}
+
+.poster-word {
+  position: absolute;
+  left: 0.02em;
+  width: 33vw;
+  max-width: 720px;
+  bottom: 0.01em;
+  margin: 0;
+  z-index: 2;
+  font-size: clamp(6.5rem, 12vw, 11rem);
+  line-height: 0.82;
+  font-weight: 500;
+  letter-spacing: -0.08em;
+  color: #000;
+  white-space: nowrap;
+  pointer-events: none;
+  transform: scaleY(1.18);
+  transform-origin: left bottom;
 }
 
 @media (max-width: 900px) {
-  .layout {
+  body {
+    padding: 0.5rem;
+  }
+
+  .poster {
     grid-template-columns: 1fr;
-    padding: 1rem;
+    width: 100%;
+    height: auto;
   }
 
-  .hero {
-    padding: 1.5rem;
+  .panel {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
   }
 
-  h1 {
-    font-size: clamp(2rem, 12vw, 3.2rem);
+  .panel-sidebar {
+    padding: 0.9rem 0.8rem 0.9rem;
+  }
+
+  .panel-stage {
+    min-height: 55vh;
+  }
+
+  #snapshotImage {
+    right: 0.6rem;
+    top: 0.6rem;
+    width: min(34vw, 170px);
+  }
+
+  .poster-word {
+    position: static;
+    padding: 0.1rem 0.08em 0.12em;
+    font-size: clamp(3.6rem, 16vw, 6rem);
+    background: var(--panel);
   }
 }

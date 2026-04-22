@@ -4,7 +4,6 @@ const snapshotImage = document.getElementById("snapshotImage");
 const startButton = document.getElementById("startButton");
 const captureButton = document.getElementById("captureButton");
 const downloadButton = document.getElementById("downloadButton");
-const paletteSelect = document.getElementById("paletteSelect");
 const statusText = document.getElementById("status");
 
 const ctx = canvas.getContext("2d", { willReadFrequently: true });
@@ -19,13 +18,6 @@ const bayerMatrix = [
   [60, 188, 28, 156, 52, 180, 20, 148],
   [252, 124, 220, 92, 244, 116, 212, 84]
 ];
-
-const palettes = {
-  mono: [[0, 0, 0], [255, 255, 255]],
-  blueGold: [[2, 65, 166], [250, 182, 47]],
-  cyanPink: [[67, 222, 212], [255, 161, 205]],
-  rose: [[240, 87, 133], [255, 193, 212]]
-};
 
 let stream;
 let animationFrameId;
@@ -46,11 +38,19 @@ async function startCamera() {
 
   try {
     stream = await navigator.mediaDevices.getUserMedia({
-      video: { width: 640, height: 480, facingMode: "user" },
+      video: {
+        width: { ideal: 1280 },
+        height: { ideal: 960 },
+        facingMode: "user"
+      },
       audio: false
     });
     video.srcObject = stream;
     await video.play();
+    if (video.videoWidth && video.videoHeight) {
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+    }
     captureButton.disabled = false;
     setStatus("Camera running. Live Bayer dithering active.");
     renderLoop();
@@ -65,7 +65,10 @@ function renderLoop() {
     return;
   }
 
-  ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+  ctx.save();
+  ctx.scale(-1, 1);
+  ctx.drawImage(video, -canvas.width, 0, canvas.width, canvas.height);
+  ctx.restore();
   const frame = ctx.getImageData(0, 0, canvas.width, canvas.height);
   ditherFrame(frame);
   ctx.putImageData(frame, 0, 0);
@@ -75,7 +78,6 @@ function renderLoop() {
 
 function ditherFrame(frame) {
   const { data, width, height } = frame;
-  const palette = palettes[paletteSelect.value];
 
   for (let y = 0; y < height; y += 1) {
     for (let x = 0; x < width; x += 1) {
@@ -87,12 +89,11 @@ function ditherFrame(frame) {
       // Match the Processing sketch's grayscale-before-threshold behavior.
       const grey = 0.299 * r + 0.587 * g + 0.114 * b;
       const threshold = bayerMatrix[y % 8][x % 8];
-      const tone = grey > threshold ? 1 : 0;
-      const [outR, outG, outB] = palette[tone];
+      const tone = grey > threshold ? 255 : 0;
 
-      data[index] = outR;
-      data[index + 1] = outG;
-      data[index + 2] = outB;
+      data[index] = tone;
+      data[index + 1] = tone;
+      data[index + 2] = tone;
       data[index + 3] = 255;
     }
   }
