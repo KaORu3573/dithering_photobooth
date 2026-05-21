@@ -2,6 +2,16 @@
 
 This project now includes a browser version of the original Processing sketch in `camera.pde`.
 
+## Live website
+
+The published GitHub Pages site is:
+
+```text
+https://kaoru3573.github.io/dithering_photobooth/
+```
+
+Open that link in a browser and allow camera permission when prompted.
+
 ## What `camera.pde` does
 
 The sketch:
@@ -20,12 +30,12 @@ That maps cleanly to the browser:
 - `pixels[]` -> `CanvasRenderingContext2D.getImageData()`
 - `saveFrame()` -> `canvas.toDataURL()` plus download
 
-## Run the website
+## Run locally
 
 Because browsers block camera access on plain file URLs, serve the folder locally:
 
 ```powershell
-python -m http.server 8000
+py -m http.server 8000
 ```
 
 Then open:
@@ -34,11 +44,25 @@ Then open:
 http://localhost:8000
 ```
 
+## Deploy with GitHub Pages
+
+The current deployed URL is:
+
+```text
+https://kaoru3573.github.io/dithering_photobooth/
+```
+
+To update the live site:
+
+1. Commit your changes locally.
+2. Push them to the GitHub repository.
+3. GitHub Pages will redeploy the site from the repository branch.
+
 ## Files
 
 - `index.html`: page structure and controls
 - `style.css`: layout and visual styling
-- `script.js`: webcam access, Bayer dithering, palette mapping, capture/download
+- `script.js`: webcam access, Bayer dithering, mirroring, capture/download
 - `camera.pde`: original Processing reference
 
 ## Porting notes
@@ -50,10 +74,3 @@ The JavaScript version keeps the same Bayer matrix from the Processing sketch. T
 3. Look up a threshold from the Bayer matrix using `x % 8` and `y % 8`.
 4. Output one of two colors based on the threshold result.
 5. Paint the processed frame back to the canvas.
-
-If you want the website to match the sketch even more closely, the next steps would be:
-
-- add a countdown flow before capture
-- save a strip of 3 or 4 photos instead of a single frame
-- expose Floyd-Steinberg and Atkinson as filter options
-- mirror the camera for a more natural selfie preview
